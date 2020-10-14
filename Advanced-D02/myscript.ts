@@ -1,5 +1,6 @@
 //parent Class Vehicle
 class Vehicle {
+
 	name;
 	buyInPrice;
 	performanceType;
@@ -9,6 +10,7 @@ class Vehicle {
 	fuel;
 	finalPrice;  //not in constructor, will be calculated after object-construction!!
 	image;
+
 	
 	constructor(name, buyInPrice, performanceType, seats, yearOfProduction, kilometersLeft, fuel, image){
 		this.name = name; 
@@ -19,11 +21,12 @@ class Vehicle {
 		this.kilometersLeft = kilometersLeft;
 		this.fuel = fuel;
 		this.image = image;
+
 	}
 }
 
 class Motorbike extends Vehicle{
-	lugageSpace;
+	lugageSpace;   //difference to parent vehicle class
 
 
 	constructor(name, buyInPrice, performanceType, seats, yearOfProduction, kilometersLeft, fuel, image, lugageSpace){
@@ -35,7 +38,7 @@ class Motorbike extends Vehicle{
 		if (this.performanceType == "Economy"){
 			var perfTyp = 0.9;
 		}
-		if (this.performanceType == "Sport"){
+		else if (this.performanceType == "Sport"){
 			var perfTyp = 1.0;
 		}
 		else  {
@@ -44,7 +47,7 @@ class Motorbike extends Vehicle{
 		
 		let seats = (this.seats * 0.05) + 1;
 
-		let yeOfProd = 1-((2020 - this.yearOfProduction)/1000) ;
+		let yeOfProd = 1-((2020 - this.yearOfProduction)/100) ;
 
 		let kilomeLeft = this.kilometersLeft * 0.05;
 
@@ -61,16 +64,16 @@ class Motorbike extends Vehicle{
 		else{
 			var lugageSp = 1;
 		}
-		console.log("Calculation for "+this.name+": (Buy Price:) "+ this.buyInPrice+ " X (Performance Typ: "+this.performanceType+") " + perfTyp + " X (Seats:)" + seats + " X yearOfProduction-Multiplier: " + yeOfProd  + " X " + fuelCost + " X " + lugageSp +" + "+kilomeLeft+"=");
+		console.log("Calculation for "+this.name+": (Buy Price:) "+ this.buyInPrice+ " X (Performance Typ: "+this.performanceType+") " + perfTyp + " X (Seats: "+this.seats+ ") "+ seats +  "X yearOfProduction-Multiplier: " + yeOfProd + " X (fuel-type-multiplier:) " + fuelCost + " X " + lugageSp +" + "+kilomeLeft+"=");
 		
-		this.finalPrice = this.buyInPrice * perfTyp * seats * yeOfProd  * fuelCost * lugageSp +kilomeLeft;
+		this.finalPrice = this.buyInPrice * perfTyp * seats * yeOfProd  * fuelCost * lugageSp +kilomeLeft;  //lugageSp increases price if "yes"
 		
 		return this.finalPrice;	
 	}
 }
 
 class Truck extends Vehicle {
-	transportCapacity;
+	transportCapacity;  //difference to normal vehicle ->> capacity in KG affects the price: 
 
 	constructor(name, buyInPrice, performanceType, seats, yearOfProduction, kilometersLeft, fuel, image, transportCapacity){
 		super(name, buyInPrice, performanceType, seats, yearOfProduction, kilometersLeft, fuel, image);
@@ -81,7 +84,7 @@ class Truck extends Vehicle {
 		if (this.performanceType == "Economy"){
 			var perfTyp = 0.9;
 		}
-		if (this.performanceType == "Sport"){
+		else if (this.performanceType == "Sport"){
 			var perfTyp = 1.0;
 		}
 		else  {
@@ -90,7 +93,7 @@ class Truck extends Vehicle {
 		
 		let seats = (this.seats * 0.05) + 1;
 
-		let yeOfProd = 1-((2020 - this.yearOfProduction)/1000) ;
+		let yeOfProd = 1-((2020 - this.yearOfProduction)/100) ;
 
 		let kilomeLeft = this.kilometersLeft * 0.05;
 
@@ -105,14 +108,14 @@ class Truck extends Vehicle {
 			var transportCap = 0.9;
 		}
 		
-		if (this.transportCapacity <=30000){
+		else if (this.transportCapacity <=30000){
 			var transportCap = 1.0;
 		}
 
 		else{
 			var transportCap = 1.1;
 		}
-		console.log("Calculation for "+this.name+": (Buy Price:) "+ this.buyInPrice+ " X (Performance Typ: "+this.performanceType+") " + perfTyp + " X (Seats:)" + seats + " X yearOfProduction-Multiplier: " + yeOfProd  + " X fuel-type-multiplier: " + fuelCost + " X " + transportCap +" + "+kilomeLeft+"=");
+		console.log("Calculation for "+this.name+": (Buy Price:) "+ this.buyInPrice+ " X (Performance Typ: "+this.performanceType+") " + perfTyp + " X (Seats: "+this.seats+ ")" + seats + " X yearOfProduction-Multiplier: " + yeOfProd  + " X (fuel-type-multiplier:) " + fuelCost + " X " + transportCap +" + "+kilomeLeft+"=");
 		this.finalPrice = this.buyInPrice * perfTyp * seats * yeOfProd  * fuelCost * transportCap +kilomeLeft;
 		
 		return this.finalPrice;
@@ -120,20 +123,25 @@ class Truck extends Vehicle {
 	
 		}
 	}
+
+
+//Creation of Object starts here
 var truck1 = new Truck("Super V100 Truck",10000, "Economy", 3, 1990, 100000, "Diesel", "Image/truck.jpg", 20000);
-var truck2 = new Truck("Mega XL3000",20000,"Sport", 5,2008, 150000, "Diesel", "Image/truck1.jpg", 30000);
+var truck2 = new Truck("Mega XL3000",15000,"Sport", 5, 2001, 15000, "Diesel", "Image/truck1.jpg", 8000);
+var truck3 = new Truck("Mega XL3000",35000,"Sport", 5, 2000, 15000, "Diesel", "Image/truck2.jpg", 8000);
 
-
+//Calculate price and log into console
 console.log(truck1.calculatePrice());
 console.log(truck2.calculatePrice());
+console.log(truck3.calculatePrice());
 
-var bike1 = new Motorbike("Super Bike 1000",2000, "Sport", 2, 2001, 60000, "Benzin","Image/bike.jpg", "yes");
+var bike1 = new Motorbike("Super Bike 1000",2008, "Sport", 2, 2001, 60000, "Benzin","Image/bike.jpg", "yes");
 
 console.log(bike1.calculatePrice());
 
 var vehicles = new Array;
 
-vehicles.push(truck1, bike1, truck2);
+vehicles.push(truck1, bike1, truck2, truck3);
 
 console.log(vehicles);
 
@@ -153,7 +161,7 @@ for (var i = 0; i < vehicles.length; i++) {
                     <li class="list-group-item">Fueltype: `+vehicles[i].fuel +`</li>
                   </ul>
                 </p>
-                <a href="#" class="btn btn-primary pricebutton" me = `+number+`>CLICK for Price Details<div id = "priceDiv"></div></a>
+                <a href="#" class="btn btn-primary pricebutton" id = `+number+`>CLICK for Price Details<div id = "priceDiv"></div></a>
               </div>
             </div>          
         </div>`
@@ -162,7 +170,7 @@ for (var i = 0; i < vehicles.length; i++) {
 
  $(document).ready(function(){
   $(".pricebutton").on("click", function(){
-    var index = $(this).attr("me");
+    var index = $(this).attr("id");
     var price = vehicles[index].finalPrice;
     
     $(this).parent().find("#priceDiv").html(price+",- EUR");
